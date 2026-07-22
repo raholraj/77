@@ -12,7 +12,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Extract ZIP file
-        run: unzip private-agent-FIXED100.zip
+        run: |
+          unzip private-agent-FIXED100.zip
+          # Dono cases handle karo
+          if [ -d "fixed-agent-v100" ]; then mv fixed-agent-v100 fixed-agent; fi
 
       - uses: subosito/flutter-action@v2
         with:
