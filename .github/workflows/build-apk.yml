@@ -13,7 +13,7 @@ jobs:
 
       - name: Extract ZIP file
         run: |
-          unzip private-agent-FIXED100.zip
+          unzip private-agent-FIXED100-2.zip
           # Dono cases handle karo
           if [ -d "fixed-agent-v100" ]; then mv fixed-agent-v100 fixed-agent; fi
 
