@@ -8,46 +8,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Extract ZIP file
         run: unzip private-agent-FIXED100.zip
 
-      - name: Setup Flutter (latest stable)
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Create .env file from GitHub Secrets
+      - name: Create .env from Secrets
         working-directory: fixed-agent
         run: |
           echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > .env
           echo "CHAT_ID=${{ secrets.CHAT_ID }}" >> .env
 
-      - name: Fix pubspec.yaml version
-        working-directory: fixed-agent
-        run: |
-          sed -i 's/flutter_screen_recording: \^0.2.7/flutter_screen_recording: \^2.0.25/' pubspec.yaml
-
-      - name: Fix Permission.overlay in main.dart
-        working-directory: fixed-agent
-        run: |
-          sed -i 's/Permission\.overlay/Permission.systemAlertWindow/' lib/main.dart
-
-      - name: Get Flutter packages
+      - name: Flutter pub get
         working-directory: fixed-agent
         run: flutter pub get
 
-      - name: Build Release APK
+      - name: Build APK
         working-directory: fixed-agent
         run: flutter build apk --release
 
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: private-agent-apk
+          name: agent-apk
           path: fixed-agent/build/app/outputs/flutter-apk/app-release.apk
-
